@@ -1,6 +1,6 @@
 {
   "name": "@bishop254/rule-902",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Rule 902 is to calculate the number of transactions the creditor has received over a period",
   "main": "index.ts",
   "files": [
