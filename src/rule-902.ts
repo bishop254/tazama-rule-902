@@ -47,13 +47,13 @@ export async function handleTransaction(
   loggerService.trace('Step 2 - Query setup', context, msgId);
 
   const currentPacs002TimeFrame = req.transaction.FIToFIPmtSts.GrpHdr.CreDtTm;
-  const debtorAccountId = `accounts/${req.DataCache.dbtrAcctId}`;
-  const debtorAccIdAql = aql`${debtorAccountId}`;
+  const creditorAccountId = `accounts/${req.DataCache.cdtrAcctId}`;
+  const creditorAccIdAql = aql`${creditorAccountId}`;
   const maxQueryRange: number = ruleConfig.config.parameters.maxQueryRange as number;
   const maxQueryRangeAql = aql` AND DATE_TIMESTAMP(${currentPacs002TimeFrame}) - DATE_TIMESTAMP(pacs002.CreDtTm) <= ${maxQueryRange}`;
 
   const queryString = aql`FOR pacs002 IN transactionRelationship
-    FILTER pacs002._to == ${debtorAccIdAql}
+    FILTER pacs002._from == ${creditorAccIdAql}
     AND pacs002.TxTp == 'pacs.002.001.12'
     ${maxQueryRangeAql}
     AND pacs002.CreDtTm <= ${currentPacs002TimeFrame}
